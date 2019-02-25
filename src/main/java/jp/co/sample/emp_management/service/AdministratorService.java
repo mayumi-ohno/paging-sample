@@ -29,19 +29,39 @@ public class AdministratorService {
 	 * @param administrator　管理者情報
 	 */
 	public void insert(Administrator administrator) {
-		// パスワード暗号化
-		administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
 		administratorRepository.insert(administrator);
 	}
 	
+//	/**
+//	 * ログインをします.
+//	 * @param mailAddress メールアドレス
+//	 * @param password パスワード
+//	 * @return 管理者情報　存在しない場合はnullが返ります
+//	 */
+//	public Administrator login(String mailAddress, String passward) {
+//		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, passward);
+//		return administrator;
+//	}
+	
 	/**
-	 * ログインをします.
+	 * メールアドレスから管理者情報を取得します.
+	 * 
 	 * @param mailAddress メールアドレス
-	 * @param password パスワード
-	 * @return 管理者情報　存在しない場合はnullが返ります
+	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
-	public Administrator login(String mailAddress, String passward) {
-		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, passward);
-		return administrator;
+	public Administrator findByMailAddress(String mailAddress) {
+		return administratorRepository.findByMailAddress(mailAddress);
+	}
+
+	/**
+	 * パスワードを暗号化する.
+	 * 
+	 * @param rawPassword
+	 *            暗号化前のパスワード(元のパスワード)
+	 * @return 暗号化後のパスワード
+	 */
+	public String encodePassword(String rawPassword) {
+		String encodedPassword = passwordEncoder.encode(rawPassword);
+		return encodedPassword;
 	}
 }

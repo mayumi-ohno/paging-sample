@@ -4,6 +4,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,10 +67,34 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(InsertAdministratorForm form) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+		
+		// パスワード確認
+		if(!form.getPassword().equals(form.getConfirmationPassword())){
+			result.rejectValue("password", "", "パスワードが一致していません");
+			result.rejectValue("confirmationPassword", "", "");
+		}
+
+		// メールアドレスが重複している場合の処理
+		Administrator existAdministrator = administratorService.findByMailAddress(form.getMailAddress());
+		if(existAdministrator != null){
+			result.rejectValue("mailAddress", "", "そのメールアドレスは既に登録されています");
+		}
+		
+		// エラーが一つでもあれば入力画面に戻る
+		if (result.hasErrors()) {
+			  return toInsert();
+		}
+		
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
+		
+		// パスワードを暗号化
+		administrator.setPassword(administratorService.encodePassword(administrator.getPassword()));
+		
+		// 登録処理
 		administratorService.insert(administrator);
 		return "redirect:/";
 	}
