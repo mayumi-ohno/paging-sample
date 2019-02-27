@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.repository.EmployeeRepository;
 
@@ -51,5 +52,24 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+	
+	/**
+	 * 従業員情報を登録します.
+	 * 
+	 * @param employee　登録した従業員情報
+	 */
+	public Employee insert(Employee employee) {
+		return employeeRepository.insert(employee);
+	}
+
+	/**
+	 * メールアドレスから従業員情報を取得します.
+	 * 
+	 * @param mailAddress メールアドレス
+	 * @return 従業員情報 存在しない場合はnullを返します
+	 */
+	public Employee findByMailAddress(String mailAddress) {
+		return employeeRepository.findByMailAddress(mailAddress);
 	}
 }

@@ -3,6 +3,7 @@ package jp.co.sample.emp_management.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.domain.Employee;
 
 /**
@@ -75,7 +77,9 @@ public class EmployeeRepository {
 	}
 
 	/**
-	 * 従業員情報を変更します.
+	 * 従業員情報を更新します.
+	 * 
+	 * @param employee 従業員情報
 	 */
 	public void update(Employee employee) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
@@ -83,4 +87,63 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+
+	/**
+	 * 従業員情報を登録します.
+	 * <pre>
+	 * このメソッドでは、IDをプログラムで採番しています。
+	 * ・従業員テーブルから重複しないIDを取ってくる
+	 * ・取ってきたIDを使ってインサートする
+	 * これを別スレッドに移ることなく確実に処理するためにsynchronizedをつけています。
+	 * </pre>
+	 * @param employee 従業員情報
+	 * @return インサートした従業員情報
+	 */
+	synchronized public Employee insert(Employee employee) {
+		// IDの採番
+		employee.setId(getPrimaryId());
+		
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+
+		// インサート処理
+		String insertSql = "INSERT INTO employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
+				+ " VALUES(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+		template.update(insertSql, param);
+
+		return employee;
+	}
+
+	/*
+	 * 従業員テーブルの中で一番大きいID + 1(プライマリーキー=主キー)を取得する.
+	 * 
+	 * @return テーブル内で一番値が大きいID + 1.データがない場合は1
+	 */
+	private Integer getPrimaryId() {
+		try {
+			Integer maxId = template.queryForObject("SELECT MAX(id) FROM employees;", new MapSqlParameterSource(),
+					Integer.class);
+			return maxId + 1;
+		} catch (DataAccessException e) {
+			// データが存在しない場合
+			return 1;
+		}
+	}
+
+	/**
+	 * メールアドレスから従業員情報を取得します.
+	 * 
+	 * @param mailAddress メールアドレス
+	 * @return 従業員情報 存在しない場合はnullを返します
+	 */
+	public Employee findByMailAddress(String mailAddress) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE mail_address=:mailAddress";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		if (employeeList.size() == 0) {
+			return null;
+		}
+		return employeeList.get(0);
+	}
+	
+	
 }
