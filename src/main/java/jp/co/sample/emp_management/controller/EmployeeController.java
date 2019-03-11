@@ -137,7 +137,7 @@ public class EmployeeController {
 	}
 
 	/**
-	 * 従業員詳細(ここでは扶養人数のみ)を更新します.
+	 * 従業員情報を登録します.
 	 * 
 	 * @param form 従業員情報用フォーム
 	 * @return 従業員一覧画面へリダクレクト
@@ -190,7 +190,7 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 	
-	/**
+	/*
 	 * ファイル名から拡張子を返します.
 	 * @param originalFileName ファイル名
 	 * @return .を除いたファイルの拡張子
