@@ -140,8 +140,13 @@
 									<label th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" class="error-messages">
 										郵便番号を入力してください
 									</label>
-									<input type="text" name="zipCode" id="zipCode" class="form-control" placeholder="111-1111"
-										 th:field="*{zipCode}" th:errorclass="error-input" value="111-1111">
+									<div class="input-group">
+										<input type="text" name="zipCode" id="zipCode" class="form-control" placeholder="111-1111" size="7"
+										 th:field="*{zipCode}" th:errorclass="error-input">
+										<span class="input-group-btn">
+										    <button id="search" type="button" class="btn btn-primary">住所検索</button>
+										</span>
+									</div>
 							    </td>
 							  </tr>
 							  <tr>
@@ -221,7 +226,32 @@
 	<!-- end container -->
 	
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+	$(function() {
+	  // ［検索］ボタンクリックで検索開始
+	  $('#search').click(function() {
+	    $.ajax({
+	        url: "http://zipcoda.net/api",
+	        dataType: "jsonp",
+	        data: { 
+	          zipcode: $('#zipCode').val() 
+	        },
+	      }
+	    )
+	    // 検索成功時にはページに結果を反映
+	    .done(function(data) {
+	      // コンソールに取得データを表示
+	      console.log(data);
+	      $("#address").val(data.items[0].address);
+	    })
+	    // 検索失敗時には、その旨をダイアログ表示
+	    .fail(function() {
+	      window.alert('正しい結果を得られませんでした。');
+	    });
+	  });
+	});
+	</script>
 	<script src="../../static/js/bootstrap.min.js"></script>
 </body>
 </html>
