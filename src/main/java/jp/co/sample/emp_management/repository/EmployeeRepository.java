@@ -144,5 +144,19 @@ public class EmployeeRepository {
 		return employeeList.get(0);
 	}
 	
+	/**
+	 * 名前から従業員を(曖昧)検索します.
+	 * 
+	 * @param name
+	 *            従業員の名前
+	 * @return 検索された従業員の情報一覧
+	 */
+	public List<Employee> searchByNameContaining(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :name ORDER BY hire_date DESC";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+
+		List<Employee> itemList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return itemList;
+	}
 	
 }

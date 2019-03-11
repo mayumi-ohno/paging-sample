@@ -56,6 +56,37 @@
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
 		</ol>
 
+		<!-- search form -->
+	<div class="row">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">従業員を検索する</div>
+					</div>
+					<div class="panel-body">
+						<form method="post" action="list.html" th:action="@{/employee/searchByNameContaining}" th:object="${searchEmployeeForm}">
+							<div class="form-group">
+								<label for="code" class="control-label col-sm-2">従業員名</label>
+								<div class="col-sm-9">
+									<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">
+										従業員名を入力してください
+									</label>
+									<input type="text" name="name" id="name" class="form-control" placeholder="山田太郎"
+										 th:field="*{name}" th:errorclass="error-input" value="山田太郎">
+								</div>
+							</div>
+							<div class="text-center">
+								<button type="submit" value="検索" class="btn btn-primary">検索</button>
+								<button type="button" class="btn btn-default" id="jquery_reset_perfect">クリア</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 		<!-- table -->
 		<div class="row">
 			<div
