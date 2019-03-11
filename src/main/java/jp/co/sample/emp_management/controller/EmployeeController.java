@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.InsertEmployeeForm;
+import jp.co.sample.emp_management.form.SearchEmployeeForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
 
@@ -41,8 +42,18 @@ public class EmployeeController {
 	 * @return フォーム
 	 */
 	@ModelAttribute
-	public UpdateEmployeeForm setUpForm() {
+	public UpdateEmployeeForm setUpUpdateEmployeeForm() {
 		return new UpdateEmployeeForm();
+	}
+	
+	/**
+	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
+	 * 
+	 * @return フォーム
+	 */
+	@ModelAttribute
+	public SearchEmployeeForm setUpSearchEmployeeForm() {
+		return new SearchEmployeeForm();
 	}
 
 	/////////////////////////////////////////////////////
@@ -204,5 +215,26 @@ public class EmployeeController {
 	    	throw new FileNotFoundException();
 	    }
 	    return originalFileName.substring(point + 1);
+	}
+	
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員を曖昧検索する
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員を曖昧検索します.
+	 * 
+	 * @param model モデル
+	 * @return 従業員一覧画面
+	 */
+	@RequestMapping("/searchByNameContaining")
+	public String searchByNameContaining(@Validated SearchEmployeeForm form, BindingResult result, Model model) {
+		// 一つでもエラーがあれば入力画面へ戻りエラーメッセージを出す
+		if (result.hasErrors()) {
+			return showList(model);
+		}
+		
+		List<Employee> employeeList = employeeService.searchByNameContaining(form.getName());
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
 	}
 }

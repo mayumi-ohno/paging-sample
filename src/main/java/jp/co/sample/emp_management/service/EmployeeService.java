@@ -71,4 +71,15 @@ public class EmployeeService {
 	public Employee findByMailAddress(String mailAddress) {
 		return employeeRepository.findByMailAddress(mailAddress);
 	}
+	
+	/**
+	 * 名前から従業員を(曖昧)検索します.
+	 * 
+	 * @param name
+	 *            従業員の名前
+	 * @return 検索された従業員の情報一覧
+	 */
+	public List<Employee> searchByNameContaining(String name) {
+		return employeeRepository.searchByNameContaining(name);
+	}
 }
