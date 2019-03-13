@@ -82,7 +82,7 @@ public class EmployeeController {
 			employeeListForAutocomplete.append("\"");
 		}
 		model.addAttribute("employeeListForAutocomplete", employeeListForAutocomplete);
-		
+		System.out.println(10/0);
 		return "employee/list";
 	}
 
