@@ -20,7 +20,7 @@
 $( function() {
   var availableTags = [ [(${employeeListForAutocomplete})] ];
 
-  $( "#name" ).autocomplete({
+  $( "#searchName" ).autocomplete({
     source: availableTags
   });
 } );
@@ -77,15 +77,11 @@ $( function() {
 						<div class="panel-title">従業員を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" action="list.html" th:action="@{/employee/searchByNameContaining}" th:object="${searchEmployeeForm}">
+						<form method="post" action="list.html" th:action="@{/employee/showList}">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">従業員名</label>
 								<div class="col-sm-9">
-									<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">
-										従業員名を入力してください
-									</label>
-									<input type="text" name="name" id="name" class="form-control" placeholder="山田太郎"
-										 th:field="*{name}" th:errorclass="error-input" value="山田太郎">
+									<input type="text" name="searchName" id="searchName" class="form-control" placeholder="太郎" th:value="${searchName}">
 								</div>
 							</div>
 							<div class="text-center">
@@ -117,7 +113,7 @@ $( function() {
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="employee : ${employeeList}">
+						<tr th:each="employee : ${employeePage.content}">
 							<td>
 								<a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
 									<span th:text="${employee.name}">山田太郎</span>
@@ -132,7 +128,14 @@ $( function() {
 						</tr>
 					</tbody>
 				</table>
-
+				
+				<!-- ページング機能 -->
+				<div th:if="${employeePage.totalPages > 0}" class="pagination"
+				    th:each="pageNumber : ${pageNumbers}">
+				    <a th:href="@{/employee/showList(size=${employeePage.size}, page=${pageNumber}, searchName=${searchName})}"
+				        th:text=${pageNumber}
+				        th:class="${pageNumber==employeePage.number + 1} ? active"></a>
+				</div>
 
 <!-- ここから下を編集する必要はありません -->
 

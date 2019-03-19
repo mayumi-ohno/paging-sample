@@ -45,19 +45,19 @@ public class EmployeeRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
+	private final String SQL = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date DESC";
+
 	/**
 	 * 従業員一覧情報を入社日順で取得します.
 	 * 
 	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
 	 */
 	public List<Employee> findAll() {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date DESC";
+		List<Employee> employeeList = template.query(SQL, EMPLOYEE_ROW_MAPPER);
 
-		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
-
-		return developmentList;
+		return employeeList;
 	}
-
+	
 	/**
 	 * 主キーから従業員情報を取得します.
 	 * 
