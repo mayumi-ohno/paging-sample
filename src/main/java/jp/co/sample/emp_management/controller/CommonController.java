@@ -20,6 +20,6 @@ public class CommonController {
 	 */
 	@RequestMapping("/maintenance")
 	public String maintenance() {
-		return "common/error";
+		return "error/500";
 	}
 }

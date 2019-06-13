@@ -130,7 +130,7 @@ public class AdministratorController {
 //	public String login(LoginForm form, BindingResult result) {
 //		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 //		if (administrator == null) {
-//			result.addError(new ObjectError("loginError", "メールアドレスまたはパスワードが不正です。"));
+//			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 //			return toLogin();
 //		}
 //		session.setAttribute("administratorName", administrator.getName());
