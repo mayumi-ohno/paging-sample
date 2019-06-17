@@ -25,22 +25,31 @@ public class AdministratorService {
 
 	/**
 	 * 管理者情報を登録します.
+	 * パスワードはここでハッシュ化されます
 	 * 
 	 * @param administrator　管理者情報
 	 */
 	public void insert(Administrator administrator) {
+		
+		// パスワードをハッシュ化
+		administrator.setPassword(encodePassword(administrator.getPassword()));
+		
 		administratorRepository.insert(administrator);
 	}
 	
 //	/**
-//	 * ログインをします.
+//	 * ログインをします.(SpringSecurityに任せるためコメントアウトしました)
 //	 * @param mailAddress メールアドレス
 //	 * @param password パスワード
 //	 * @return 管理者情報　存在しない場合はnullが返ります
 //	 */
 //	public Administrator login(String mailAddress, String passward) {
-//		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, passward);
-//		return administrator;
+//		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+//		// パスワード一致チェック
+//		if(passwordEncoder.matches(passward, administrator.getPassword())) {
+//			return administrator;
+//		}
+//		return null;
 //	}
 	
 	/**
@@ -54,14 +63,13 @@ public class AdministratorService {
 	}
 
 	/**
-	 * パスワードを暗号化する.
+	 * パスワードをハッシュ化する.
 	 * 
 	 * @param rawPassword
-	 *            暗号化前のパスワード(元のパスワード)
-	 * @return 暗号化後のパスワード
+	 *            ハッシュ化前のパスワード(元のパスワード)
+	 * @return ハッシュ化後のパスワード
 	 */
 	public String encodePassword(String rawPassword) {
-		String encodedPassword = passwordEncoder.encode(rawPassword);
-		return encodedPassword;
+		return passwordEncoder.encode(rawPassword);
 	}
 }

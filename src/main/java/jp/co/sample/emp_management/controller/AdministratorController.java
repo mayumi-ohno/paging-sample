@@ -86,13 +86,9 @@ public class AdministratorController {
 			  return toInsert();
 		}
 		
-		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		
-		// パスワードを暗号化
-		administrator.setPassword(administratorService.encodePassword(administrator.getPassword()));
 		
 		// 登録処理
 		administratorService.insert(administrator);
@@ -117,15 +113,15 @@ public class AdministratorController {
 		return "administrator/login";
 	}
 
-	/**
-	 * ログインします. (SpringSecurityに任せるためコメントアウトしました)
-	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
-	 * @return ログイン後の従業員一覧画面
-	 */
+//	/**
+//	 * ログインします. (SpringSecurityに任せるためコメントアウトしました)
+//	 * 
+//	 * @param form
+//	 *            管理者情報用フォーム
+//	 * @param result
+//	 *            エラー情報格納用オブッジェクト
+//	 * @return ログイン後の従業員一覧画面
+//	 */
 //	@RequestMapping("/login")
 //	public String login(LoginForm form, BindingResult result) {
 //		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
