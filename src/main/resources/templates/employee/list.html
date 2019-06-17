@@ -53,7 +53,7 @@ $( function() {
 						<li><a href="insert.html" th:href="@{/employee/toInsert}">従業員登録</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span sec:authentication="name">山田さん</span>こんにちは！
+						<span sec:authentication="principal.administrator.name">山田</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>

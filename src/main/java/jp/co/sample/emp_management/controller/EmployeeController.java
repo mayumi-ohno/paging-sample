@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.domain.LoginAdministrator;
 import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
@@ -57,12 +59,17 @@ public class EmployeeController {
 	 * 従業員一覧画面を出力します.
 	 * 
 	 * @param model モデル
-	 * @page 出力したいページ数
-	 * @page 検索文字列
+	 * @param 出力したいページ数
+	 * @param 検索文字列
+	 * @param ログイン情報をコントローラで取得
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model, Integer page, String searchName) {
+	public String showList(Model model, Integer page, String searchName, @AuthenticationPrincipal LoginAdministrator loginAdministrator) {
+		
+		// ログイン情報をコントローラで取得するサンプル
+		System.out.println(loginAdministrator.getAdministrator().getName() + "さんがログイン中");
+		
 		// ページング機能追加
 		if (page == null) {
 			// ページ数の指定が無い場合は1ページ目を表示させる
