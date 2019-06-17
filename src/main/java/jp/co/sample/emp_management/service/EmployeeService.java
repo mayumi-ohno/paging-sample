@@ -119,5 +119,25 @@ public class EmployeeService {
 	    return employeePage;
 	}
 
+	/**
+	 * オートコンプリート用にJavaScriptの配列の中身を文字列で作ります.
+	 * 
+	 * @param employeeList 従業員一覧
+	 * @return　オートコンプリート用JavaScriptの配列の文字列
+	 * 　　　　　(例) "渡辺三郎","佐藤次郎","山本八郎","小林九子"
+	 */
+	public StringBuilder getEmployeeListForAutocomplete(List<Employee> employeeList) {
+		StringBuilder employeeListForAutocomplete = new StringBuilder();
+		for (int i = 0; i < employeeList.size(); i++) {
+			if (i != 0) {
+				employeeListForAutocomplete.append(",");
+			}
+			Employee employee = employeeList.get(i);
+			employeeListForAutocomplete.append("\"");
+			employeeListForAutocomplete.append(employee.getName());
+			employeeListForAutocomplete.append("\"");
+		}
+		return employeeListForAutocomplete;
+	}
 
 }

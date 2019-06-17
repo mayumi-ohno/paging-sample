@@ -90,19 +90,13 @@ public class EmployeeController {
 		model.addAttribute("pageNumbers", pageNumbers);
 
 		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
-		StringBuilder employeeListForAutocomplete = new StringBuilder();
-		for (int i = 0; i < employeeList.size(); i++) {
-			if (i != 0) {
-				employeeListForAutocomplete.append(",");
-			}
-			Employee employee = employeeList.get(i);
-			employeeListForAutocomplete.append("\"");
-			employeeListForAutocomplete.append(employee.getName());
-			employeeListForAutocomplete.append("\"");
-		}
+		StringBuilder employeeListForAutocomplete = employeeService.getEmployeeListForAutocomplete(employeeList);
 		model.addAttribute("employeeListForAutocomplete", employeeListForAutocomplete);
+		
 		return "employee/list";
 	}
+
+
 
 	/**
 	 * ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る

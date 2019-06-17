@@ -72,4 +72,5 @@ public class AdministratorService {
 	public String encodePassword(String rawPassword) {
 		return passwordEncoder.encode(rawPassword);
 	}
+	
 }
