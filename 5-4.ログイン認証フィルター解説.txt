@@ -4,13 +4,13 @@
 　SecurityConfig
 　　・・・ログイン認証用設定クラス
 
-○サービスクラス
-　AdministratorDetailsServiceImpl
-　　・・・ログイン後のメンバー情報に権限情報を付与するサービスクラス
-
 ○ドメイン
 　LoginAdministrator
 　　・・・Administratorドメインに権限(ロール)情報が付与されたドメイン
+
+○サービスクラス
+　AdministratorDetailsServiceImpl
+　　・・・ログイン後のメンバー情報に権限情報を付与するサービスクラス
 
 ○pom.xml
 		<dependency>

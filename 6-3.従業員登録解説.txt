@@ -1,0 +1,39 @@
+従業員登録
+
+○insert.html 従業員登録画面
+
+<form method="post" action="list.html" th:action="@{/employee/insert}" th:object="${insertEmployeeForm}" enctype="multipart/form-data">
+
+※enctype="multipart/form-data"を忘れずに
+
+  <tr>
+    <th nowrap>
+      写真
+    </th>
+    <td>
+		<label th:if="${#fields.hasErrors('imageFile')}" th:errors="*{imageFile}" class="error-messages">
+			写真を選択してください
+		</label>
+		<input name="imageFile" type="file" accept=".jpg,.png,image/jpeg,image/png" th:errorclass="error-input"/>
+    </td>
+  </tr>
+
+ ※<input type="file" ・・・>を使用する
+ 
+ 
+ ○EmployeeControllerの insert()メソッド
+ 
+		// 画像ファイルをBase64形式にエンコード
+		String base64FileString = Base64.getEncoder().encodeToString(imageFile.getBytes());
+		if ("jpg".equals(fileExtension)) {
+			base64FileString = "data:image/jpeg;base64," + base64FileString;
+		} else if ("png".equals(fileExtension)) {
+			base64FileString = "data:image/png;base64," + base64FileString;
+		}
+		employee.setImage(base64FileString);
+
+
+○detail.html 従業員情報表示
+　
+<img  th:src="${employee.image}" />
+	

@@ -90,13 +90,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * <pre>
-     * bcryptアルゴリズムで暗号化する実装を返します.
-     * これを指定することでパスワード暗号化やマッチ確認する際に
+     * bcryptアルゴリズムでハッシュ化する実装を返します.
+     * これを指定することでパスワードハッシュ化やマッチ確認する際に
      * @Autowired
 	 * private PasswordEncoder passwordEncoder;
 	 * と記載するとDIされるようになります。
      * </pre>
-     * @return bcryptアルゴリズムで暗号化する実装オブジェクト
+     * @return bcryptアルゴリズムでハッシュ化する実装オブジェクト
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -31,8 +31,9 @@ public class AdministratorService {
 	 */
 	public void insert(Administrator administrator) {
 		
-		// パスワードをハッシュ化
-		administrator.setPassword(encodePassword(administrator.getPassword()));
+		// パスワードをハッシュ化する
+		String encodePassword = passwordEncoder.encode(administrator.getPassword());
+		administrator.setPassword(encodePassword);
 		
 		administratorRepository.insert(administrator);
 	}
@@ -62,15 +63,4 @@ public class AdministratorService {
 		return administratorRepository.findByMailAddress(mailAddress);
 	}
 
-	/**
-	 * パスワードをハッシュ化する.
-	 * 
-	 * @param rawPassword
-	 *            ハッシュ化前のパスワード(元のパスワード)
-	 * @return ハッシュ化後のパスワード
-	 */
-	public String encodePassword(String rawPassword) {
-		return passwordEncoder.encode(rawPassword);
-	}
-	
 }
