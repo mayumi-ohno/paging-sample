@@ -14,11 +14,11 @@
 ○SecurityConfig.java
 /**
   * <pre>
-  * bcryptアルゴリズムで暗号化する実装を返します.
+  * bcryptアルゴリズムでハッシュ化する実装を返します.
   * これを指定することでパスワード暗号化やマッチ確認する際に
   * @Autowired
-* private PasswordEncoder passwordEncoder;
-* と記載するとDIされるようになります。
+  * private PasswordEncoder passwordEncoder;
+  * と記載するとDIされるようになります。
   * </pre>
   * @return bcryptアルゴリズムで暗号化する実装オブジェクト
   */
@@ -41,7 +41,7 @@
 public void insert(Administrator administrator) {
   
   // パスワードをハッシュ化
-  administrator.setPassword(encodePassword(administrator.getPassword()));
+  administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
   
   administratorRepository.insert(administrator);
 }
@@ -54,7 +54,8 @@ public void insert(Administrator administrator) {
  * @return 管理者情報　存在しない場合はnullが返ります
  */
 public Administrator login(String mailAddress, String passward) {
-  Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+  Administrator administrator 
+  	= administratorRepository.findByMailAddress(mailAddress);
   // パスワード一致チェック
   if(passwordEncoder.matches(passward, administrator.getPassword())) {
     return administrator;
