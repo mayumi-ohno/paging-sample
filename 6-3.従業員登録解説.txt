@@ -11,7 +11,7 @@
       写真
     </th>
     <td>
-		<label th:if="${#fields.hasErrors('imageFile')}" th:errors="*{imageFile}" class="error-messages">
+		<label th:errors="*{imageFile}" class="error-messages">
 			写真を選択してください
 		</label>
 		<input name="imageFile" type="file" accept=".jpg,.png,image/jpeg,image/png" th:errorclass="error-input"/>
