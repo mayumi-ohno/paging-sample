@@ -22,7 +22,7 @@
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
         
-○HTML
+○HTMLでログイン情報を取得する方法
 <html lang="ja"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -35,7 +35,8 @@
 <!-- 管理者の人だけ表示 -->
 <span sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">Admin</a></span>
 <span sec:authorize="hasRole('ROLE_USER')"><a href="/user">User</a></span>
-
+<!-- ログインしていない人だけ表示 -->
+<span sec:authorize="isAuthenticated()"><a href="/login">ログイン</a></span>
 
 ○コントローラでログイン情報を取得する方法
 　→EmployeeControllerクラスのshowListメソッド
