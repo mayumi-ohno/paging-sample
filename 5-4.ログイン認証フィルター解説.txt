@@ -23,6 +23,13 @@
         </dependency>
         
 ○HTMLでログイン情報を取得する方法
+pom.xmlに以下を追加
+<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+</dependency>
+
+htmlでの記述
 <html lang="ja"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
