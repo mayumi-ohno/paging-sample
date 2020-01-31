@@ -230,25 +230,25 @@
 	<script>
 	$(function() {
 	  // ［検索］ボタンクリックで検索開始
-	  $('#search').click(function() {
+	  $('#search').on("click",function() {
+		  
 	    $.ajax({
 	        url: "http://zipcoda.net/api",
 	        dataType: "jsonp",
 	        data: { 
 	          zipcode: $('#zipCode').val() 
-	        },
-	      }
-	    )
+	        }
+	    }).done(function(data) {
 	    // 検索成功時にはページに結果を反映
-	    .done(function(data) {
 	      // コンソールに取得データを表示
 	      console.log(data);
 	      $("#address").val(data.items[0].address);
-	    })
-	    // 検索失敗時には、その旨をダイアログ表示
-	    .fail(function() {
-	      window.alert('正しい結果を得られませんでした。');
+	      
+	    }).fail(function() {
+	    // 検索失敗時には、エラーのダイアログを表示
+	      alert('正しい結果を得られませんでした。');
 	    });
+	    
 	  });
 	});
 	</script>
