@@ -25,14 +25,10 @@ public class Administrator {
 	/**
 	 * 初期化用コンストラクタ.
 	 * 
-	 * @param id
-	 *            id(主キー)
-	 * @param name
-	 *            名前
-	 * @param mailAddress
-	 *            メールアドレス
-	 * @param password
-	 *            パスワード
+	 * @param id          id(主キー)
+	 * @param name        名前
+	 * @param mailAddress メールアドレス
+	 * @param password    パスワード
 	 */
 	public Administrator(Integer id, String name, String mailAddress, String password) {
 		this.id = id;
